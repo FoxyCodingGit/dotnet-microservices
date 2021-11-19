@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: platforms-depl
 spec:
-  replicas: 1, # number of services that run
+  replicas: 1 # number of services that run
   selector: # selector and template work hand in hand // selector selecting the template as part of Deployment
     matchLabels:
       app: platformservice
@@ -12,6 +12,6 @@ spec:
       labels:
         app: platformservice
     spec:
-      contianers: # in yaml, a dash denotes an array
+      containers: # in yaml, a dash denotes an array
         - name: platformservice
           image: adamfoxdocker/platformservice:latest
