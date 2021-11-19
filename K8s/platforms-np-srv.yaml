@@ -1,0 +1,15 @@
+# Creates node port which allows for external access into the platform service (used for development not production)
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: platformnpservice-srv
+spec:
+  type: NodePort
+  selector:
+    app: platformservice # selecting deployment
+  ports:
+    - name: platformservice
+      protocol: TCP
+      port: 80
+      targetPort: 80
