@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: platforms-depl
+  name: commands-depl
 spec:
   replicas: 1 # number of services that run
   selector: # selector and template work hand in hand // selector selecting the template as part of Deployment
     matchLabels:
-      app: platformservice
+      app: commandservice
   template: # defining pod and contianer we use
     metadata:
       labels:
-        app: platformservice
+        app: commandservice
     spec:
       containers: # in yaml, a dash denotes an array
-        - name: platformservice
-          image: adamfoxdocker/platformservice:latest
+        - name: commandservice
+          image: adamfoxdocker/commandservice:latest
 ---
 # The above line seperates the deployment from the Cluster IP Config (fun fact: havin gcomment on that line breaks it as its not recognised)
 apiVersion: v1
 kind: Service
 metadata:
-  name: platforms-clusterip-srv
+  name: commands-clusterip-srv # this defines the endpoint that the platform service will call. (look at appsettings.json)
 spec:
   type: ClusterIP
   selector:
-    app: platformservice
+    app: commandservice
   ports:
-    - name: platformservice
+    - name: commandservice
       protocol: TCP
       port: 80
       targetPort: 80
