@@ -19,18 +19,31 @@ namespace PlatformService
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        private readonly IWebHostEnvironment _env;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            _env = env; // added IWebHostEnvironment to see if its prod or debug mode, no extra stuff behind the scenes so can add to constructor without additional logic.
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(opt => 
-                opt.UseInMemoryDatabase("InMem"));
+            if (_env.IsProduction())
+            {
+                Console.WriteLine("--> Using SqlServer Db");
+                // Add using sql service when in production (in docker image hosted in Kubernetes pod)
+                services.AddDbContext<AppDbContext>(opt =>
+                    opt.UseSqlServer(Configuration.GetConnectionString("PlatformsConn"))); // as called it ConnectionStrings in appsettings, can use "GetConnectionString" for delicious readability
+            }
+            else
+            {
+                Console.WriteLine("--> Using InMem Db");
+                services.AddDbContext<AppDbContext>(opt => 
+                    opt.UseInMemoryDatabase("InMem"));
+            }
 
             services.AddScoped<IPlatformRepo, PlatformRepo>();
 
@@ -69,7 +82,7 @@ namespace PlatformService
                 endpoints.MapControllers();
             });
 
-            PrepDb.PrepPopulation(app);
+            PrepDb.PrepPopulation(app, env.IsProduction());
         }
     }
 }
