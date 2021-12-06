@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - host: acme.com # need to redirect this to our local address as it needs a "proper" url.
+      http:
+        paths:
+          - path: /api/platforms
+            pathType: Prefix
+            backend:
+              service:
+                name: platforms-clusterip-srv
+                port:
+                  number: 80
+          - path: /api/c/commands # this is why we have specified "c" in the path, so we can differentiate platform and command. Tbh dont understand still.
+            pathType: Prefix
+            backend:
+              service:
+                name: commands-clusterip-srv
+                port:
+                  number: 80
