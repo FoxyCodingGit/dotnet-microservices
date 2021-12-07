@@ -1,4 +1,6 @@
 using System;
+using AutoMapper;
+using CommandService.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CommandService.Controllers
@@ -7,10 +9,13 @@ namespace CommandService.Controllers
     [ApiController]
     public class PlatformsController : ControllerBase
     {
-        // changed the url so it doesnt match the other service? Says to trust him and that this is future proofing!
-        public PlatformsController()
-        {
+        private readonly ICommandRepo _repository;
+        private IMapper _mapper;
 
+        public PlatformsController(ICommandRepo repository, IMapper mapper)
+        {
+            _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpPost]
