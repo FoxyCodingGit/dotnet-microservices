@@ -14,6 +14,8 @@ namespace PlatformService.PlatformProfile
 
             // This was around as we get create Dto from user and we convert to platform for our app to use.
             CreateMap<PlatformCreateDto, Platform>();
+
+            CreateMap<PlatformReadDto, PlatformPublishedDto>();
         }
     }
 }
