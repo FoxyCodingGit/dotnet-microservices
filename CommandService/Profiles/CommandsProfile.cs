@@ -12,6 +12,11 @@ namespace CommandsService.Profiles
             CreateMap<Platform, PlatformReadDto>();
             CreateMap<CommandCreateDto, Command>();
             CreateMap<Command, CommandReadDto>();
+
+            // We want the id of the source (platformPublishDto) to be mapped to the external id of the destination (Platform)
+            // PlatformPublishDto.Id -> set to -> Platform.ExternalId
+            CreateMap<PlatformPublishDto, Platform>()
+                .ForMember(dest => dest.ExternalId, opt => opt.MapFrom(src => src.Id));
         }
     }
 }

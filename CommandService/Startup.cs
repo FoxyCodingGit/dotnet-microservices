@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CommandService.AsyncDataServices;
 using CommandService.Data;
+using CommandService.EventProcesing;
 using CommandsService.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +34,11 @@ namespace CommandService
             services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
             services.AddScoped<ICommandRepo, CommandRepo>();
             services.AddControllers();
+
+            services.AddHostedService<MessageBusSubscriber>(); // needs special dp adding method
+
+            services.AddSingleton<IEventProcessor, EventProcessor>();
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // add automapper
             services.AddSwaggerGen(c =>
             {

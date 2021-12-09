@@ -16,7 +16,7 @@ namespace PlatformService.AsyncDataServices
         public MessageBusClient(IConfiguration configuration) // Remember that we can access "IConfiguration" without extra setup
         {
             _configuration = configuration;
-            var factory = new ConnectionFactory() { HostName = _configuration["RabbitMQHost"], Port =  int.Parse(_configuration["RabbitMQPort"])};
+            var factory = new ConnectionFactory() { HostName = _configuration["RabbitMQHost"], Port =  int.Parse(_configuration["RabbitMQPort"]) };
 
             try
             {
