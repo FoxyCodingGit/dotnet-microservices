@@ -17,7 +17,7 @@ spec:
                 name: platforms-clusterip-srv
                 port:
                   number: 80
-          - path: /api/c/commands # this is why we have specified "c" in the path, so we can differentiate platform and command. Tbh dont understand still.
+          - path: /api/c/platforms # this is why we have specified "c" in the path, so we can differentiate platform and command. Tbh dont understand still.
             pathType: Prefix
             backend:
               service:
